@@ -8,11 +8,14 @@ SCREEN_HEIGHT = 600
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Игра Меткий Эколог")
 
-# Убедитесь, что пути к изображениям корректны
+# Загрузка иконки и изображений
 icon = pygame.image.load("screns/logo3.png")
 pygame.display.set_icon(icon)
 
 target_img = pygame.image.load("screns/basket.png")
+cursor_img = pygame.image.load("screns/cup30.png")  # Изображение курсора стакана
+cursor_width, cursor_height = cursor_img.get_size()
+
 target_width = 100
 target_height = 100
 
@@ -20,6 +23,9 @@ target_x = random.randint(0, SCREEN_WIDTH - target_width)
 target_y = random.randint(0, SCREEN_HEIGHT - target_height)
 
 color = random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)
+
+# Отключаем стандартный курсор
+pygame.mouse.set_visible(False)
 
 running = True
 while running:
@@ -33,8 +39,16 @@ while running:
                 target_x = random.randint(0, SCREEN_WIDTH - target_width)
                 target_y = random.randint(0, SCREEN_HEIGHT - target_height)
 
-    # Перемещаем blit и update внутрь основного цикла
+    # Отображаем цель
     screen.blit(target_img, (target_x, target_y))
+
+    # Получаем текущие координаты мыши
+    mouse_x, mouse_y = pygame.mouse.get_pos()
+
+    # Отображаем изображение курсора на месте мыши
+    screen.blit(cursor_img, (mouse_x - cursor_width // 2, mouse_y - cursor_height // 2))
+
+    # Обновляем экран
     pygame.display.update()
 
 pygame.quit()
